@@ -15,7 +15,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: String,
+    status: {
+      type: String,
+      default: 'user',
+    },
   },
   {
     //create date

@@ -27,7 +27,7 @@ export const register = async (req, res) => {
         _id: user._id,
       },
       'secret123',
-      { expiresIn: '180d' },
+      { expiresIn: '360d' },
     );
     const { passwordHash, ...userData } = user._doc;
     res.json({
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось зарегистрироваться',
+      message: 'Данный пользователь уже существует',
     });
   }
 };
