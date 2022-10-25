@@ -18,3 +18,11 @@ export const collectionCreateValidation = [
   body('imageUrl', 'Неверная ссылка на изображение').isString(),
   body('items').isArray(),
 ];
+
+export const itemCreateValidation = [
+  body('name', 'Введите название предмета').isLength({ min: 2 }).isString(),
+  body('type', 'Введите тип предмета').isLength({ min: 2 }).isString(),
+  body('id'),
+  body('tags').isArray(),
+  body('comments').isArray(),
+];

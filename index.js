@@ -1,10 +1,16 @@
 import express from 'express';
 import multer from 'multer';
 import mongoose from 'mongoose';
-import { registerValidation, loginValidation, collectionCreateValidation } from './validations.js';
+import {
+  registerValidation,
+  loginValidation,
+  collectionCreateValidation,
+  itemCreateValidation,
+} from './validations.js';
 import checkAuth from './utils/checkAuth.js';
 import * as UserController from './controllers/UserController.js';
 import * as CollectionController from './controllers/CollectionController.js';
+import * as ItemController from './controllers/ItemController.js';
 import cors from 'cors';
 mongoose
   .connect(
@@ -52,11 +58,17 @@ app.post(
   CollectionController.createCollection,
 );
 app.get('/collection', CollectionController.getAllCollections);
+app.get('/collection/:id', CollectionController.getOneCollection);
 app.delete('/collection/:id', checkAuth, CollectionController.removeCollection);
 app.patch('/collection/:id', checkAuth, CollectionController.updateCollection);
-app.post('/item/:id', checkAuth, CollectionController.createItem);
-app.delete('/item/:id', checkAuth, CollectionController.deleteItem);
-app.patch('/item/:id', checkAuth, CollectionController.updateItem);
+
+app.post('/collection/:id/item', checkAuth, itemCreateValidation, ItemController.createItem);
+app.get('/item', ItemController.getAllItems);
+app.get('/collection/:id/item', ItemController.getColletionItems);
+app.get('/collection/:collectionId/item/:itemId', ItemController.getOneItem);
+app.delete('/collection/:id/item', checkAuth, ItemController.removeItem);
+app.patch('/collection/:collectionId/itemComment/:itemId', checkAuth, ItemController.addComment);
+app.patch('/collection/:collectionId/item/:itemId', checkAuth, ItemController.updateItem);
 
 app.listen(1111, (err) => {
   if (err) {

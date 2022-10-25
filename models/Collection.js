@@ -14,10 +14,10 @@ const CollectionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    items: {
-      type: Array,
-      default: [],
-    },
+    // items: {
+    //   type: Array,
+    //   default: [],
+    // },
     imageUrl: {
       type: String,
       required: true,
