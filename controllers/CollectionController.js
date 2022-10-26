@@ -106,12 +106,9 @@ export const getOneCollection = async (req, res) => {
 
 export const getMyCollection = async (req, res) => {
   try {
-    const myCollections = await CollectionModel.find(
-      {
-        user: req.userId,
-      },
-      { items: 1 },
-    );
+    const myCollections = await CollectionModel.find({
+      user: req.userId,
+    });
     res.json(myCollections);
   } catch (error) {
     console.log(error),

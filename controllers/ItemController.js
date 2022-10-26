@@ -7,7 +7,7 @@ export const createItem = async (req, res) => {
       id: req.body.id,
       name: req.body.name,
       type: req.body.type,
-      tags: req.body.tags,
+      tags: req.body.tags.split(' '),
       comments: [],
       collectionName: collecionId,
     });
@@ -52,7 +52,7 @@ export const getOneItem = async (req, res) => {
     const itemId = req.params.itemId;
     const item = await ItemModel.findOne({
       collectionName: collectionId,
-      id: itemId,
+      _id: itemId,
     });
     res.json(item);
   } catch (error) {
@@ -109,14 +109,14 @@ export const addComment = async (req, res) => {
     const addComment = await ItemModel.updateOne(
       {
         collectionName: collectionId,
-        id: itemId,
+        _id: itemId,
       },
       {
         $push: {
           comments: {
             name: req.body.name,
             text: req.body.text,
-            data: req.body.data,
+            date: req.body.date,
           },
         },
       },
@@ -138,7 +138,7 @@ export const updateItem = async (req, res) => {
     const updateItem = await ItemModel.updateOne(
       {
         collectionName: collectionId,
-        id: itemId,
+        _id: itemId,
       },
       {
         name: req.body.name,
