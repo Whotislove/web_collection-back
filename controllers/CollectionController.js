@@ -1,4 +1,5 @@
 import CollectionModel from '../models/Collection.js';
+import ItemModel from '../models/Item.js';
 
 export const getAllCollections = async (req, res) => {
   try {
@@ -36,6 +37,24 @@ export const removeCollection = async (req, res) => {
         });
       },
     );
+    ItemModel.deleteMany(
+      {
+        collectionName: collectionId,
+      },
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: 'Не удалось удалить предметыы',
+          });
+        }
+        if (!doc) {
+          return res.status(404).json({
+            message: 'Статья не найдена',
+          });
+        }
+      },
+    );
   } catch (error) {
     console.log(error),
       res.status(500).json({
@@ -67,17 +86,16 @@ export const createCollection = async (req, res) => {
 
 export const updateCollection = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const collectionId = req.params.id;
     await CollectionModel.updateOne(
       {
-        _id: postId,
+        _id: collectionId,
       },
       {
         title: req.body.title,
         description: req.body.description,
         type: req.body.type,
         imageUrl: req.body.imageUrl,
-        items: req.body.items,
         user: req.userId,
       },
     );

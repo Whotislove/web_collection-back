@@ -7,7 +7,7 @@ export const createItem = async (req, res) => {
       id: req.body.id,
       name: req.body.name,
       type: req.body.type,
-      tags: req.body.tags.split(' '),
+      tags: req.body.tags.split(','),
       comments: [],
       collectionName: collecionId,
     });
