@@ -70,7 +70,6 @@ export const createCollection = async (req, res) => {
       description: req.body.description,
       type: req.body.type,
       imageUrl: req.body.imageUrl,
-      // items: req.body.items,
       user: req.userId,
     });
 

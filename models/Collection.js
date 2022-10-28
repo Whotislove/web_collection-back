@@ -14,10 +14,6 @@ const CollectionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // items: {
-    //   type: Array,
-    //   default: [],
-    // },
     imageUrl: {
       type: String,
       required: true,
@@ -26,6 +22,11 @@ const CollectionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    itemsCount: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
   {

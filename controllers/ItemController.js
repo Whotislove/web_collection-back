@@ -1,17 +1,25 @@
+import CollectionModel from '../models/Collection.js';
 import ItemModel from '../models/Item.js';
 
 export const createItem = async (req, res) => {
   try {
-    const collecionId = req.params.id;
+    const collectionId = req.params.id;
     const doc = new ItemModel({
       id: req.body.id,
       name: req.body.name,
       type: req.body.type,
       tags: req.body.tags.split(','),
       comments: [],
-      collectionName: collecionId,
+      collectionName: collectionId,
     });
-
+    const update = await CollectionModel.findByIdAndUpdate(
+      {
+        _id: collectionId,
+      },
+      {
+        $inc: { itemsCount: 1 },
+      },
+    );
     const item = await doc.save();
     res.json(item);
   } catch (error) {
@@ -65,7 +73,7 @@ export const getOneItem = async (req, res) => {
 export const removeItem = async (req, res) => {
   try {
     const collectionId = req.params.id;
-    ItemModel.deleteOne(
+    const deleteItem = ItemModel.findByIdAndDelete(
       {
         _id: req.body.id,
       },
@@ -83,6 +91,14 @@ export const removeItem = async (req, res) => {
         }
       },
     );
+    const deleteItemCount = await CollectionModel.findByIdAndUpdate(
+      {
+        _id: collectionId,
+      },
+      {
+        $inc: { itemsCount: -1 },
+      },
+    );
     const arr = await ItemModel.find({ collectionName: collectionId });
     arr.forEach(async (e, i) => {
       const update = await ItemModel.updateOne(
@@ -94,6 +110,7 @@ export const removeItem = async (req, res) => {
         },
       );
     });
+
     res.json({ success: true });
   } catch (error) {
     console.log(error),
