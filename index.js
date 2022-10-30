@@ -14,7 +14,8 @@ import * as ItemController from './controllers/ItemController.js';
 import cors from 'cors';
 mongoose
   .connect(
-    /*process.env.MONGODB_URI*/ 'mongodb+srv://admin:wwwwww@cluster0.lmxnk7s.mongodb.net/collection?retryWrites=true&w=majority',
+    process.env
+      .MONGODB_URI /*'mongodb+srv://admin:wwwwww@cluster0.lmxnk7s.mongodb.net/collection?retryWrites=true&w=majority'*/,
   )
   .then(() => {
     console.log('DB OK');
@@ -69,7 +70,6 @@ app.get('/collection/:collectionId/item/:itemId', ItemController.getOneItem);
 app.delete('/collection/:id/item', checkAuth, ItemController.removeItem);
 app.patch('/collection/:collectionId/itemComment/:itemId', checkAuth, ItemController.addComment);
 app.patch('/collection/:collectionId/item/:itemId', checkAuth, ItemController.updateItem);
-
 app.listen(process.env.PORT || 1111, (err) => {
   if (err) {
     return console.log(err);
