@@ -97,3 +97,83 @@ export const getMe = async (req, res) => {
     });
   }
 };
+export const getAll = async (req, res) => {
+  try {
+    const user = await UserModel.find(req);
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Ошибка пользователей',
+    });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    await UserModel.findOneAndDelete(
+      {
+        _id: req.body._id,
+      },
+      (error, doc) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({
+            message: 'Ошибка',
+          });
+        }
+        if (!doc) {
+          return res.status(404).json({
+            message: 'Пользователь не найден',
+          });
+        }
+        res.json({
+          success: true,
+        });
+      },
+    );
+    await CollectionModel.deleteMany(
+      {
+        user: req.body._id,
+      },
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: 'Не удалось удалить коллекцию',
+          });
+        }
+        if (!doc) {
+          return res.status(404).json({
+            message: 'Статья не найдена',
+          });
+        }
+      },
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Ошибка пользователей',
+    });
+  }
+};
+export const updateUser = async (req, res) => {
+  try {
+    await UserModel.updateOne(
+      {
+        _id: req.body._id,
+      },
+      {
+        status: req.body.status,
+      },
+    );
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Ошибка запроса',
+    });
+  }
+};

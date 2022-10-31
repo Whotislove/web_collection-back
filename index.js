@@ -14,8 +14,8 @@ import * as ItemController from './controllers/ItemController.js';
 import cors from 'cors';
 mongoose
   .connect(
-    process.env
-      .MONGODB_URI /*'mongodb+srv://admin:wwwwww@cluster0.lmxnk7s.mongodb.net/collection?retryWrites=true&w=majority'*/,
+    /*process.env
+      .MONGODB_URI*/ 'mongodb+srv://admin:wwwwww@cluster0.lmxnk7s.mongodb.net/collection?retryWrites=true&w=majority',
   )
   .then(() => {
     console.log('DB OK');
@@ -49,6 +49,9 @@ app.post('/register', registerValidation, UserController.register);
 app.post('/login', loginValidation, UserController.login);
 
 app.get('/me', checkAuth, UserController.getMe);
+app.get('/users', checkAuth, UserController.getAll);
+app.patch('/users', checkAuth, UserController.updateUser);
+app.delete('/users', checkAuth, UserController.deleteUser);
 
 app.get('/mycollection', checkAuth, CollectionController.getMyCollection);
 
