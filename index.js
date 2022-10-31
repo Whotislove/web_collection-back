@@ -44,9 +44,9 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   });
 });
 
-app.post('/login', loginValidation, UserController.login);
-
 app.post('/register', registerValidation, UserController.register);
+
+app.post('/login', loginValidation, UserController.login);
 
 app.get('/me', checkAuth, UserController.getMe);
 
